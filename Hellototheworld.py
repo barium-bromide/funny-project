@@ -133,20 +133,22 @@ def main():
     global mainloop
     while mainloop:
         commands = input("Type something here: ")
-        if commands.lower() == "/command":
-            command()
-        elif commands.lower() == "/work":
-            work()
-        elif commands.lower() == "/sleep":
-            sleep()
-        elif commands.lower() == "/stop":
-            mainloop = 0
-        elif commands.lower() == "/joblist":
-            joblist()
-        elif commands.lower() == "/jobchoose":
-            jobchoose()
-        elif commands.lower() == "/study":
-            study()
+        match commands.lower():
+            case "/command":
+                command()
+            case "/work":
+                work()
+            case "/sleep":
+                sleep()
+            case "/stop":
+                mainloop = 0
+                print("\nThanks for playing\n")
+            case "/joblist":
+                joblist()
+            case "/jobchoose":
+                jobchoose()
+            case "/study":
+                study()
 if __name__ == "__main__":
     try:
         start()
