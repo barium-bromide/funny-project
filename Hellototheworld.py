@@ -1,42 +1,93 @@
 import random
 import time
 
-money,energy,income,brain_cell,work_energy= 0,0,0,0,0
+#important comment
+# ● ┌ ─ ┐ │ └ ┘ 
+
+money,income,brain_cell,work_energy= 0,0,0,0
 mainloop,gain_brain_cell = 1,1
 job = ""
 job_id = ["0","1","2","3","4","999"]
-max_energy = 100
+max_energy,energy = 100,100
 
-#important comment
-# ● ┌ ─ ┐ │ └ ┘ 
+card = {
+    'wlcm': ("┌─────────────────────────────────────────────────┐",
+             "│ Welcome to the world! Say hello world!          │",
+             "│ This is a game of hello to the world            │",
+             "│ Type /command to check out what command we have │",
+             "└─────────────────────────────────────────────────┘"),
+
+    'command': ("┌─────────────────────────────────────────────────┐", 
+                "│ /command to find out what are all the commands  │",
+                "│ /work to work for money                         │",
+                "│ /sleep to sleep and gain energy                 │",
+                "│ /study to study and gain brain cells            │",
+                "│ /stop to stop playing the game                  │",
+                "└─────────────────────────────────────────────────┘"),
+
+    'joblist': ("┌─────────────────────────────────────────────────┐",
+                "│ Quit the job[id: 0]                             │",
+                "│ Farmer[id: 1]                                   │",
+                "│ Miner[id: 2]                                    │",
+                "│ Engineer[id: 3]                                 │",
+                "│ Scientist[id: 4]                                │",
+                "│ /jobchoose to choose the job                    │",
+                "└─────────────────────────────────────────────────┘"),
+
+    'farmer': ("┌─────────────────────────────────────────────────┐",
+               "│ Salary: 20$                                     │",
+               "│ Energy: 50                                      │",
+               "│ Brain cells required: 0                         │",
+               "│ Desc: Potato farming                            │",
+               "└─────────────────────────────────────────────────┘"),
+            
+    'miner': ("┌─────────────────────────────────────────────────┐",
+              "│ Salary: 40$                                     │",
+              "│ Energy: 70                                      │",
+              "│ Brain cells required: 1                         │",
+              "│ Desc: Trying to get diamond                     │",
+              "└─────────────────────────────────────────────────┘"),
+
+    'engineer': ( "┌─────────────────────────────────────────────────┐",
+                  "│ Salary: 100$                                    │",
+                  "│ Energy: 50                                      │",
+                  "│ Brain cells required: 20                        │",
+                  "│ Desc: I fix and make machine                    │",
+                  "└─────────────────────────────────────────────────┘"),
+
+    'scientist': ( "┌─────────────────────────────────────────────────┐",
+                   "│ Salary: 1000$                                   │",
+                   "│ Energy: 50                                      │",
+                   "│ Brain cells required: 100                       │",
+                   "│ Desc: Doing for the greater good of humanity    │",
+                   "└─────────────────────────────────────────────────┘"),
+}
+
+def cards(name,card):
+    for row in card.get(name):
+        print(row)
 
 def start():
     while (len(name := input("Enter your name[must be 3 character or more]: "))) < 3:
         print()
+
     print(f"hi {name},")
-    print("┌─────────────────────────────────────────────────┐")
-    print("│ Welcome to the world! Say hello world!          │")
-    print("│ This is a game of hello to the world            │")
-    print("│ Type /command to check out what command we have │")
-    print("└─────────────────────────────────────────────────┘")
+    cards("wlcm",card)
 
 def command():
     print("Here is a list of commands")
-    print("┌─────────────────────────────────────────────────┐")
-    print("│ /command to find out what are all the commands  │")
-    print("│ /work to work for money                         │")
-    print("│ /sleep to sleep and gain energy                 │")
-    print("│ /study to study and gain brain cells            │")
-    print("│ /stop to stop playing the game                  │")
-    print("└─────────────────────────────────────────────────┘")
+    cards("command",card)
 
 def work():
     global money,income,energy
     if job == "":
         print("get a job with /joblist")
         return
+
     elif energy < work_energy:
+        print("You have not enough energy")
         return
+
     else:
         energy -= work_energy
         money += income
@@ -46,14 +97,7 @@ def work():
 
 def joblist():
     print("Here is a list of jobs")
-    print("┌─────────────────────────────────────────────────┐")
-    print("│ Quit the job[id: 0]                             │")
-    print("│ Farmer[id: 1]                                   │")
-    print("│ Miner[id: 2]                                    │")
-    print("│ Engineer[id: 3]                                 │")
-    print("│ Scientist[id: 4]                                │")
-    print("│ /jobchoose to choose the job                    │")
-    print("└─────────────────────────────────────────────────┘")
+    cards("joblist",card)
 
 def jobchoose():
     global job,job_id,income,work_energy
@@ -61,62 +105,50 @@ def jobchoose():
         print("Invalid id")
     if job_choice == "999":
         pass
+
     elif job_choice == "0":
         job = ""
         print("Job quited")
+
     elif job_choice == "1":
         job = "farmer"
         income = 20
         work_energy = 50
         print(f"You work as a {job}")
-        print("┌─────────────────────────────────────────────────┐")
-        print("│ Salary: 20$                                     │")
-        print("│ Energy: 50                                      │")
-        print("│ Brain cells required: 0                         │")
-        print("│ Desc: Potato farming                            │")
-        print("└─────────────────────────────────────────────────┘")
+        cards("farmer",card)
+
     elif job_choice == "2":
         if brain_cell < 1:
             print("You have not enough brain cells")
             return
+
         job = "miner"
         income = 40
         work_energy = 70
         print(f"You work as a {job}")
-        print("┌─────────────────────────────────────────────────┐")
-        print("│ Salary: 40$                                     │")
-        print("│ Energy: 70                                      │")
-        print("│ Brain cells required: 1                         │")
-        print("│ Desc: Trying to get diamond                     │")
-        print("└─────────────────────────────────────────────────┘")
+        cards("miner",card)
+
     elif job_choice == "3":
         if brain_cell < 20:
             print("You have not enough brain cells")
             return
+
         job = "engineer"
         income = 100
         work_energy = 50
         print(f"You work as a {job}")
-        print("┌─────────────────────────────────────────────────┐")
-        print("│ Salary: 100$                                    │")
-        print("│ Energy: 50                                      │")
-        print("│ Brain cells required: 20                        │")
-        print("│ Desc: I fix and make machine                    │")
-        print("└─────────────────────────────────────────────────┘")
+        cards("engineer",card)
+
     elif job_choice == "4":
         if brain_cell < 20:
             print("You have not enough brain cells")
             return
+            
         job = "scientist"
         income = 1000
         work_energy = 50
         print(f"You work as a {job}")
-        print("┌─────────────────────────────────────────────────┐")
-        print("│ Salary: 1000$                                   │")
-        print("│ Energy: 50                                      │")
-        print("│ Brain cells required: 100                       │")
-        print("│ Desc: Doing for the greater good of humanity    │")
-        print("└─────────────────────────────────────────────────┘")
+        cards("scientist",card)
 
 def sleep():
     global energy
@@ -127,7 +159,6 @@ def study():
     global brain_cell
     brain_cell += gain_brain_cell
     print(f"You gain {gain_brain_cell} brain cell. You now have {brain_cell} brain cells")
-
 
 def main():
     global mainloop
@@ -149,9 +180,10 @@ def main():
                 jobchoose()
             case "/study":
                 study()
+
 if __name__ == "__main__":
     try:
         start()
         main()
     except KeyboardInterrupt:
-        print("\nThanks for playing\n")
+        print("\n\nThanks for playing\n")
